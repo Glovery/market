@@ -93,8 +93,14 @@ export default {
     },
     getUserInfo() {
       let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-      this.roles = userInfo.roleId;
       this.username = userInfo.username;
+      if (userInfo.roleId === "0") {
+        this.roles = "超级管理员";
+      } else if (userInfo.roleId === "1") {
+        this.roles = "管理员";
+      } else {
+        this.roles = "普通用户";
+      }
     }
   },
   mounted() {

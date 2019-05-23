@@ -32,7 +32,7 @@
         <el-table-column prop="phone" label="联系方式"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="IP" label="Ip地址"></el-table-column>
-        <el-table-column fixed="right" label="操作">
+        <el-table-column fixed="right" label="操作" v-if="this.roleId === '0'">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="editDialog(scope.row)">编辑</el-button>
             <el-button size="mini" @click="handleDelete(scope.row)" type="danger">删除</el-button>
@@ -133,6 +133,8 @@ export default {
         username: "",
         phone: ""
       },
+      roleId: "",
+      username: "",
       tableData: [],
       total: 0,
       currentPage: 1,
@@ -250,7 +252,6 @@ export default {
         phone: this.queryForm.phone
       };
       userList(paramData).then(res => {
-        console.log(res.data);
         if (res.data.code === 200) {
           this.tableData = res.data.data.rows;
           this.tableData.forEach(item => {
@@ -332,10 +333,16 @@ export default {
             type: "info"
           });
         });
+    },
+    getUserInfo() {
+      let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+      this.username = userInfo.username;
+      this.roleId = userInfo.roleId;
     }
   },
   mounted() {
     this._userList();
+    this.getUserInfo();
   }
 };
 </script>
